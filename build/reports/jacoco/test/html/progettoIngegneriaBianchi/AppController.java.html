@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Progetto_Ing_sw_Bianchi_Michele</a> &gt; <a href="index.source.html" class="el_package">progettoIngegneriaBianchi</a> &gt; <span class="el_source">AppController.java</span></div><h1>AppController.java</h1><pre class="source lang-java linenums">package progettoIngegneriaBianchi;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.util.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
+
+import java.util.Date;
+
+@Controller
+<span class="nc" id="L19">public class AppController {</span>
+
+    @Autowired
+    private PatientRepository repository;
+
+    @Autowired
+    private CartellaRepository repositoryCartelle;
+
+    @RequestMapping(&quot;/&quot;)
+    public String index(){
+<span class="nc" id="L29">        return &quot;redirect:/list&quot;;</span>
+    }
+
+    @RequestMapping(&quot;/list&quot;)
+    public String list(Model model){
+
+<span class="nc" id="L35">        List&lt;Patient&gt; present = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L36">        List&lt;Patient&gt; discharged = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L37">        List&lt;Patient&gt; toSearch = (List&lt;Patient&gt;) repository.findAll();</span>
+
+<span class="nc" id="L39">        model.addAttribute(&quot;patients&quot;, present);</span>
+<span class="nc" id="L40">        model.addAttribute(&quot;discharged&quot;, discharged);</span>
+
+<span class="nc" id="L42">        sortPatients(present,discharged, toSearch);</span>
+
+<span class="nc" id="L44">        return &quot;list&quot;;</span>
+    }
+
+    @RequestMapping(&quot;/search&quot;)
+    public String search(@RequestParam(name=&quot;lastName&quot;, required=true) String lastName,
+                         Model model)
+    {
+<span class="nc" id="L51">        List&lt;Patient&gt; present = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L52">        List&lt;Patient&gt; discharged = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L53">        List&lt;Patient&gt; toSearch = repository.findByLastName(lastName);</span>
+
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        if (lastName==&quot;&quot;)</span>
+<span class="nc" id="L56">            return &quot;redirect:/list&quot;;</span>
+
+<span class="nc" id="L58">        sortPatients(present,discharged,toSearch);</span>
+
+<span class="nc" id="L60">        model.addAttribute(&quot;patients&quot;, present);</span>
+<span class="nc" id="L61">        model.addAttribute(&quot;discharged&quot;, discharged);</span>
+
+<span class="nc" id="L63">        return &quot;list&quot;;</span>
+    }
+
+    public void sortPatients(List&lt;Patient&gt; present, List&lt;Patient&gt; discharged, List&lt;Patient&gt; toSearch){
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        for (Patient p: toSearch){</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">            if(p.getDischargeDate() == null)</span>
+<span class="nc" id="L69">                present.add(p);</span>
+<span class="nc bnc" id="L70" title="All 4 branches missed.">            else if (p.getDischargeDate()!=null &amp;&amp;  p.getDischargeDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().isAfter(LocalDateTime.now()))</span>
+<span class="nc" id="L71">                present.add(p);</span>
+            else
+<span class="nc" id="L73">                discharged.add(p);</span>
+<span class="nc" id="L74">        }</span>
+<span class="nc" id="L75">    }</span>
+
+
+    @RequestMapping(&quot;/input&quot;)
+    public String input(){
+<span class="nc" id="L80">        return &quot;input&quot;;</span>
+    }
+
+    @RequestMapping(&quot;/create&quot;)
+    public String create(
+            @RequestParam(name=&quot;firstName&quot;, required=true) String firstName,
+            @RequestParam(name=&quot;lastName&quot;, required=true) String lastName,
+            @RequestParam(name=&quot;admissionDate&quot;, required=true) @DateTimeFormat(pattern = &quot;yyyy-MM-dd&quot;) Date admissionDate
+    ){
+                //repository.deleteAll();
+                //repositoryCartelle.deleteAll();
+<span class="nc" id="L91">                Patient patient = repository.save(new Patient(firstName, lastName, admissionDate));</span>
+<span class="nc" id="L92">                Long id = patient.getId();</span>
+                //Cartella cartella = new Cartella(id,&quot;&quot;,&quot;&quot;);
+<span class="nc" id="L94">                Cartella cartella = repositoryCartelle.save(new Cartella(patient.getId(), &quot;&quot;,&quot;&quot;));</span>
+<span class="nc" id="L95">                int prova = 0;</span>
+<span class="nc" id="L96">                return &quot;redirect:/list&quot;;</span>
+    }
+
+
+    @RequestMapping(&quot;/cartella&quot;)
+    public String cartella(
+            @RequestParam(name=&quot;id&quot;, required=true) Long id,
+            Model model) {
+<span class="nc" id="L104">        Optional&lt;Patient&gt; patient = repository.findById(id);</span>
+<span class="nc" id="L105">        Optional&lt;Cartella&gt; cartella = repositoryCartelle.findById(id);</span>
+<span class="nc" id="L106">        int flag = 0;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if(patient.isPresent()) {</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            if(patient.get().getDischargeDate() == null)</span>
+<span class="nc" id="L109">                flag = 1;</span>
+<span class="nc bnc" id="L110" title="All 4 branches missed.">            if ((patient.get().getDischargeDate()!=null &amp;&amp; patient.get().getDischargeDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().isAfter(LocalDateTime.now())))</span>
+<span class="nc" id="L111">                flag = 1;</span>
+
+<span class="nc" id="L113">            model.addAttribute(&quot;patient&quot;, patient.get());</span>
+<span class="nc" id="L114">            model.addAttribute(&quot;cartella&quot;, cartella.get());</span>
+<span class="nc" id="L115">            model.addAttribute(&quot;flag&quot;, flag);</span>
+<span class="nc" id="L116">            return &quot;cartella&quot;;</span>
+        }
+        else
+<span class="nc" id="L119">            return &quot;notfound&quot;;</span>
+    }
+
+
+    @RequestMapping(&quot;/edit&quot;)
+    public String edit(
+            @RequestParam(name=&quot;id&quot;, required=true) Long id,
+            Model model) {
+<span class="nc" id="L127">        Optional&lt;Patient&gt; patient = repository.findById(id);</span>
+<span class="nc" id="L128">        Optional&lt;Cartella&gt; cartella = repositoryCartelle.findById(id);</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        if(patient.isPresent()) {</span>
+<span class="nc" id="L130">            model.addAttribute(&quot;patient&quot;, patient.get());</span>
+<span class="nc" id="L131">            model.addAttribute(&quot;cartella&quot;, cartella.get());</span>
+<span class="nc" id="L132">            return &quot;edit&quot;;</span>
+        }
+        else
+<span class="nc" id="L135">            return &quot;notfound&quot;;</span>
+    }
+
+    @RequestMapping(&quot;/update&quot;)
+    public String update(
+            @RequestParam(name=&quot;id&quot;, required=true) Long id,
+            @RequestParam(name=&quot;firstName&quot;, required=true) String firstname,
+            @RequestParam(name=&quot;lastName&quot;, required=true) String lastname,
+            @RequestParam(name=&quot;admissionDate&quot;, required=true) @DateTimeFormat(pattern = &quot;yyyy-MM-dd&quot;) Date admissionDate,
+            @RequestParam(name=&quot;dischargeDate&quot;, required=true) @DateTimeFormat(pattern = &quot;yyyy-MM-dd&quot;) Date dischargeDate,
+            @RequestParam(name=&quot;drugs&quot;, required=true) String drugs,
+            @RequestParam(name=&quot;prescription&quot;, required=true) String prescription,
+            Model model) {
+<span class="nc" id="L148">        Optional&lt;Patient&gt; patient = repository.findById(id);</span>
+<span class="nc" id="L149">        Optional&lt;Cartella&gt; cartella = repositoryCartelle.findById(id);</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if(patient.isPresent()) {</span>
+<span class="nc" id="L151">            patient.get().setFirstName(firstname);</span>
+<span class="nc" id="L152">            patient.get().setLastName(lastname);</span>
+<span class="nc" id="L153">            patient.get().setAdmissionDate(admissionDate);</span>
+<span class="nc" id="L154">            patient.get().setDischargeDate(dischargeDate);</span>
+<span class="nc" id="L155">            cartella.get().setDrugs(drugs);</span>
+<span class="nc" id="L156">            cartella.get().setPrescription(prescription);</span>
+<span class="nc" id="L157">            repository.save(patient.get());</span>
+<span class="nc" id="L158">            repositoryCartelle.save(cartella.get());</span>
+<span class="nc" id="L159">            return &quot;redirect:/list&quot;;</span>
+        }
+        else
+<span class="nc" id="L162">            return &quot;notfound&quot;;</span>
+
+    }
+
+    @RequestMapping(&quot;/dimetti&quot;)
+    public String dimetti(
+            @RequestParam(name=&quot;id&quot;, required=true) Long id) {
+
+<span class="nc" id="L170">        Optional&lt;Patient&gt; patient = repository.findById(id);</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">        if(patient.isPresent()){</span>
+<span class="nc" id="L172">            patient.get().setDischargeDate(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));</span>
+<span class="nc" id="L173">            repository.save(patient.get());</span>
+<span class="nc" id="L174">            return &quot;redirect:/list&quot;;</span>
+        }
+        else
+<span class="nc" id="L177">            return &quot;notfound&quot;;</span>
+    }
+
+    @RequestMapping(&quot;/delete&quot;)
+    public String delete(
+            @RequestParam(name=&quot;id&quot;, required=true) Long id) {
+
+<span class="nc" id="L184">        Optional&lt;Patient&gt; patient = repository.findById(id);</span>
+<span class="nc" id="L185">        Optional&lt;Cartella&gt; cartella = repositoryCartelle.findById(id);</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">        if(patient.isPresent()){</span>
+<span class="nc" id="L187">            repository.deleteById(patient.get().getId());</span>
+<span class="nc" id="L188">            repositoryCartelle.deleteById(cartella.get().getId());</span>
+<span class="nc" id="L189">            return &quot;redirect:/list&quot;;</span>
+        }
+        else
+<span class="nc" id="L192">            return &quot;notfound&quot;;</span>
+    }
+
+    @RequestMapping(&quot;/print&quot;)
+    public String stampa(
+            @RequestParam(name=&quot;id&quot;, required=true) Long id,
+            Model model) {
+<span class="nc" id="L199">        Optional&lt;Patient&gt; patient = repository.findById(id);</span>
+<span class="nc" id="L200">        Optional&lt;Cartella&gt; cartella = repositoryCartelle.findById(id);</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        if(patient.isPresent()) {</span>
+<span class="nc" id="L202">            model.addAttribute(&quot;patient&quot;, patient.get());</span>
+<span class="nc" id="L203">            model.addAttribute(&quot;cartella&quot;, cartella.get());</span>
+<span class="nc" id="L204">            return &quot;stampa&quot;;</span>
+        }
+        else
+<span class="nc" id="L207">            return &quot;notfound&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
