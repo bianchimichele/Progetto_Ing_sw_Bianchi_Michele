@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MVC Web application</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<h1>Pazienti Ricoverati</h1>
+
+<table border="1" id="present" name="present">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Data ricovero</th>
+        <th>Data dimissione</th>
+        <th>Mostra</th>
+        <th>Modifica</th>
+        <th>Dimetti</th>
+        <th>Cancella</th>
+        <th>Stampa</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="patient: ${patients}">
+            <td th:text="${patient.id}" id="id"> <b>10 </b></td>
+            <td th:text="${patient.firstName}" style="text-align:center;"> John </td>
+            <td th:text="${patient.lastName}" id='lastName' style="text-align:center;"> Smith </td>
+            <td th:text="${#calendars.format(patient.admissionDate,'dd/MM/yyyy')}" style="text-align:center;"></td>
+            <td th:text="${#calendars.format(patient.dischargeDate,'dd/MM/yyyy')}" style="text-align:center;"> ancora in struttura </td>
+            <td> <a href="cartella?id=10" th:href="@{cartella(id=${patient.id})}" style="text-align:center;"> Cartella </a></td>
+            <td> <a href="edit?id=10" th:href="@{edit(id=${patient.id})}" id="modifica" style="text-align:center;"> Modifica </a></td>
+            <td> <a href="dimetti?id=10" th:href="@{dimetti(id=${patient.id})}" style="text-align:center;"> Dimetti </a></td>
+            <td> <a href="delete?id=10" th:href="@{delete(id=${patient.id})}" id="cancella" style="text-align:center;"> Cancella </a></td>
+            <td><button><a href="print?id=10" th:href="@{print(id=${patient.id})}" style="text-align:center;text-decoration:none;"> Stampa scheda </a></button></td>
+        </tr>
+        </tbody>
+</table>
+
+<h1>Pazienti Dimessi</h1>
+<table border="1" id="discharged" name="discharged">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Data Ricovero</th>
+        <th>Data Dimissione</th>
+        <th>Cartella</th>
+        <th>Modifica</th>
+        <th>Cancella</th>
+        <th>Stampa</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="patient: ${discharged}">
+        <td th:text="${patient.id}" id="idDischarged"> <b>10 </b></td>
+        <td th:text="${patient.firstName}" style="text-align:center;"> John </td>
+        <td th:text="${patient.lastName}" id='lastNameDischarged' style="text-align:center;"> Smith </td>
+        <td th:text="${#calendars.format(patient.admissionDate,'dd/MM/yyyy')}" style="text-align:center;"></td>
+        <td th:text="${#calendars.format(patient.dischargeDate,'dd/MM/yyyy')}" style="text-align:center;"> ancora in struttura </td>
+        <td> <a href="cartella?id=10" th:href="@{cartella(id=${patient.id})}" style="text-align:center;"> Cartella </a></td>
+        <td> <a id="modificaDischarged" style="text-align:center; cursor:not-allowed; pointer-events:none; color:grey;"> Modifica </a></td>
+        <td> <a id="cancellaDischarged" style="text-align:center; cursor:not-allowed; pointer-events:none; color:grey;"> Cancella </a></td>
+        <td><button><a href="print?id=10" th:href="@{print(id=${patient.id})}" style="text-align:center;text-decoration:none;"> Stampa scheda </a></button></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<button><a href="input" style="text-decoration:none;">Registra un paziente</a></button>
+<br>
+<br>
+
+<form action="search" method="post">
+    Cognome Paziente: <input type="text" name="lastName"/>
+    <input type="submit" value="Cerca"/>
+</form>
+</body>
+</html>
