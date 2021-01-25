@@ -7,7 +7,7 @@ Il componente di sistema proposto si occupa della gestione di pazienti con malat
 Come pattern architetturale è stato utilizzato *Model View Controller* per poter separare la rappresentazione dei dati, scritta in *HTML*, dalla logica, scritta in *Java*. A questo proposito è stato infatti utilizzato il framwork Java *Spring*.
 
 Il sistema di compone di una pagina principale che suddivide i pazienti in due tabelle:
-1. *Pazienti presenti*: lista di tutti i pazienti attualemente ricoverati in struttura. 
+1. *Pazienti presenti*: lista di tutti i pazienti attualmente ricoverati in struttura. 
 2. *Pazienti dimessi*: lista di tutti i pazienti che sono stati dimessi, quindi con la data di dimissione impostata antecedentemente a quella odierna.
 
 In homepage, per ogni paziente, sono disponibili alcune funzionalità. 
