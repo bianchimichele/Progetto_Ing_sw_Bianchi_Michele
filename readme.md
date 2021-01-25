@@ -39,18 +39,14 @@ Un membro del personale deve poter:
 - *Registrare un nuovo paziente*: tale azione avverrà tramite un’apposita anagrafica e dovrà avere come conseguenza la creazione di una cartella clinica vuota. Al momento della creazione, oltre a nome e cognome, verrà richiesta solamente la data di ricovero. La data di dimissione verrà dunque aggiornata con l’evolversi della situazione clinica del paziente interessato. 
 - *Dimettere un paziente*: la dimissione di un paziente implica che la sua data di dimissione venga impostata a quella odierna. Contestualmente il suddetto verrà spostato dalla lista dei pazienti ricoverati a quella dei pazienti dimessi.
 - *Stampare una cartella clinica*: ovvero mostrare in forma leggibile la cartella clinica di un paziente in modo tale che possa essere consegnata al medico curante.
+- *Ricercare un paziente*: attraverso un campo di testo deve essere possibile specificare un cognome che verrà utilizzato dal sistema come campo di ricerca fra le liste dei pazienti. Si noti che il sistema deve fornire risultati sia fra i pazienti presenti in struttura che fra quelli dimessi.
 
 #### Requisiti dottori
 
-Un medico deve poter:
+Un medico, oltre ad avere le medesime autorizzazioni di un membro dello staff, deve poter:
 
 -  *Modificare e aggiornare la cartella clinica di un paziente* specificando i farmaci assunti e i dettagli della prescrizione.
 
-#### Requisiti comuni
-
-Sia un medico che un membro dello personale devono poter: 
-
-- *Ricercare un paziente*: attraverso un campo di testo deve essere possibile specificare un cognome che verrà utilizzato dal sistema come campo di ricerca fra le liste dei pazienti. Si noti che il sistema deve fornire risultati sia fra i pazienti presenti in struttura che fra quelli dimessi.
 
 #### Vincoli
 
