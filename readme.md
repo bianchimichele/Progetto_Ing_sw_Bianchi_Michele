@@ -158,7 +158,7 @@ Per il testing è stato utilizzato il framwork *JWebUnit* che permette di testar
 Test effettuati:
 
 - *testInitialView()*: verifica che la pagina iniziale sia quella corrretta
-- *addNewPatientTest()*: verifica che la funzione di aggiunta di un nuovo paziente funzioni correttamente.
+- *addNewPatientTest()*: verifica che la funzione di aggiunta di un nuovo paziente funzioni correttamente e che quindi comporti un aumento della lunghezza della lista pazienti.
 - *deletePatientTest()*: verifica che la funzione di cancellazione di un paziente funzioni correttamente e che quindi comporti un decremento della lunghezza della lista pazienti.
 - *testOperation()*: verifica che siano state inserite le operazioni richieste e che queste re-indirizzino alle opportune pagine web.
 - *testDischarge()*: verifica il corretto funzionamento della funzione di dimissione di un paziente e quindi che comporti un decremento della lunghezza della lista dei pazienti ricoverati e un aumento della lunghezza della lista dei pazienti dimessi.
