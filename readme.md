@@ -131,7 +131,7 @@ Un medico deve poter:
 
 #### Activity Diagram
 
-*Stampa di una cartella clinca da parte di un membro dello staff*
+*Stampa di una cartella clinica da parte di un membro dello staff*
 
 ![Activity Diagram](Design/activity-diagram.png)
 
