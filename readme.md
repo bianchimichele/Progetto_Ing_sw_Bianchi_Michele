@@ -168,5 +168,3 @@ Test effettuati:
 - *testSearchPatient()*: verifica il corretto funzionamento della funzione di ricerca, ovvero che a seguito dell'utilizzo di tale funzione sia la lista dei pazienti ricoverati che quella dei pazienti dimessi mostrino solamente le occorenze di pazienti con il cognome indicato.  
 - *testNonEditableAndDeletableDischargedPatienti()*: verifica che i pazienti dimessi non possano essere ne cancellati ne modificati ma che possa essere consultata la loro cartella clinica. Verifica quindi che la pressione dei link per accedere a tali funzionalità non abbiano alcun effetto e che una volta giunti nella pagina di dettaglio della cartella clinica non siano presenti i link di modifica e cancellazione.
 
-Ritengo che il meccanismo di annotazioni di Spring interferisca con l'instrumentazione di JaCoCo, per questo motivo non è stato possibile effettuare un report di *code* *coverage* veritiero. Ad ogni modo con i metodi di test sopra elencati sono state testate tutte le funzionalità richieste. 
-
