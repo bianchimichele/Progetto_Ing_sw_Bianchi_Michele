@@ -75,7 +75,7 @@ Sia un medico che un membro dello personale devono poter:
   Una volta completata l’operazione, dopo aver premuto il tasto di conferma, il sistema ricaricherà la lista aggiornata dei pazienti. 
 
 - *Cosa può andare storto*: l'utente non specifica uno o più campi durante la creazione. In questo caso il sistema deve fornire un messaggio di errore per segnalarne l’obbligatorietà.
-- <u>Stato del sistema al termine</u>: al termine della registrazione il sistema mostrerà la homepage e quindi la lista aggiornata dei pazienti
+- *Stato del sistema al termine*: al termine della registrazione il sistema mostrerà la homepage e quindi la lista aggiornata dei pazienti
 
 **Scenario 2**: Dimissione di un paziente
 
