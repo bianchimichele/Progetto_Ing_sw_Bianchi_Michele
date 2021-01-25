@@ -86,11 +86,8 @@ public class AppController {
             @RequestParam(name="lastName", required=true) String lastName,
             @RequestParam(name="admissionDate", required=true) @DateTimeFormat(pattern = "yyyy-MM-dd") Date admissionDate
     ){
-                //repository.deleteAll();
-                //repositoryCartelle.deleteAll();
+
                 Patient patient = repository.save(new Patient(firstName, lastName, admissionDate));
-                Long id = patient.getId();
-                //Cartella cartella = new Cartella(id,"","");
                 Cartella cartella = repositoryCartelle.save(new Cartella(patient.getId(), "",""));
                 int prova = 0;
                 return "redirect:/list";
